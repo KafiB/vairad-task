@@ -7,9 +7,9 @@ urlpatterns = [
     path('admin/', admin.site.urls),
 
     path('api/auth/', include('apps.authentication.urls')),
+    path('api/tasks/', include('apps.tasks.urls')),
 
     # App routes will be added here in later milestones:
-    # path('api/tasks/', include('apps.tasks.urls')),
     # path('api/annotation/', include('apps.annotation.urls')),
 ]
 
