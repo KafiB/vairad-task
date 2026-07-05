@@ -30,6 +30,21 @@ A Django REST API backend for TaskAnnotate — a task management and image annot
 - `config/` — Django settings, URL routing, ASGI/WGI configuration
 - `media/` — uploaded annotation images
 
+## Live deployment
+
+The backend is currently deployed and running on PythonAnywhere.
+
+- API base URL: `https://kafiboss.pythonanywhere.com/api/`
+- Admin panel: `https://kafiboss.pythonanywhere.com/admin/`
+- Live health check: `https://kafiboss.pythonanywhere.com/`
+
+### Deployment notes
+
+- Deployed using PythonAnywhere with a dedicated virtual environment
+- Production settings were adapted for free-tier hosting
+- Resolved deployment issues related to Python environment wiring and dependency loading
+- Successfully tested authentication and protected API endpoints against the live server
+
 ## API overview
 
 ### Authentication
@@ -148,6 +163,7 @@ Required values:
 - Used DRF serializers for complex nested validation and cross-model consistency
 - Optimized user scope and security by filtering data per authenticated user
 - Prepared backend to support a modern frontend application through CORS and media handling
+- Solved real production deployment challenges, including environment configuration and hosting compatibility issues
 
 ## Future enhancements
 
