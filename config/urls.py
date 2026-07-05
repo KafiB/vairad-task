@@ -8,6 +8,7 @@ urlpatterns = [
 
     path('api/auth/', include('apps.authentication.urls')),
     path('api/tasks/', include('apps.tasks.urls')),
+    path('api/annotation/', include('apps.annotation.urls')),
 
     # App routes will be added here in later milestones:
     # path('api/annotation/', include('apps.annotation.urls')),
