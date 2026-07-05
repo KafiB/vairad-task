@@ -79,14 +79,15 @@ export interface ImageListItem {
   file: string;
   original_filename: string;
   status: ImageStatus;
+  width: number;
+  file_size: number;
+  height: number;
+  annotation_count: number;
   uploaded_at: string;
 }
 
 export interface ImageDetail extends ImageListItem {
   owner: number;
-  width: number;
-  height: number;
-  file_size: number;
   file_format: string;
   tag_details: ImageTag[];
   annotations: Annotation[];

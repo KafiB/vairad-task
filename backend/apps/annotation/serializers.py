@@ -101,6 +101,8 @@ class ImageSerializer(serializers.ModelSerializer):
 
 
 class ImageListSerializer(serializers.ModelSerializer):
+
+
     """
     Lightweight version for the thumbnail strip / image grid —
     matches the 'Images' page and the filmstrip at the bottom of
@@ -108,6 +110,11 @@ class ImageListSerializer(serializers.ModelSerializer):
     not the full nested annotation list (avoids over-fetching).
     """
 
+    annotation_count = serializers.IntegerField(source='annotations.count', read_only=True)
+
     class Meta:
         model = Image
-        fields = ('id', 'file', 'original_filename', 'status', 'uploaded_at')
+        fields = (
+            'id', 'file', 'original_filename', 'status', 'width', 'height',
+            'file_size', 'uploaded_at', 'annotation_count',
+        )

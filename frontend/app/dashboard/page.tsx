@@ -1,7 +1,7 @@
 'use client';
 
 import { ListTodo, CheckCircle2, Image as ImageIcon, Clock } from 'lucide-react';
-import DashboardLayout from '@/components/layout/DashboardLayout';
+import DashboardLayout from '@/components/dashboard/DashboardLayout';
 import { useAuth } from '@/lib/hooks/useAuth';
 
 const stats = [

@@ -1,7 +1,7 @@
 'use client';
 
 import { User as UserIcon, Mail, Calendar, ShieldCheck } from 'lucide-react';
-import DashboardLayout from '@/components/layout/DashboardLayout';
+import DashboardLayout from '@/components/dashboard/DashboardLayout';
 import { useAuth } from '@/lib/hooks/useAuth';
 
 export default function ProfilePage() {
