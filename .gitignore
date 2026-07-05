@@ -1,25 +1,4 @@
-# Environments
-.env
 .venv/
-venv/
-env/
-
-# Python
+.python-version
 __pycache__/
-*.py[cod]
-*$py.class
-*.egg-info/
-
-# Django
-*.log
-media/
-staticfiles/
-db.sqlite3
-
-# IDE
-.vscode/
-.idea/
-
-# OS
-.DS_Store
-Thumbs.db
+*.pyc
