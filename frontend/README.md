@@ -1,127 +1,148 @@
 # Frontend — Vairad Task
 
-A polished, production-ready Next.js + TypeScript frontend for a task management and image annotation platform. This README is written to help recruiters quickly understand the scope, technical choices, and my contributions, and to make it trivial to run the project locally.
+This repository contains the Next.js + TypeScript frontend for the TaskAnnotate application (task management + image annotation). This README documents how to run the frontend locally, build for production, and deploy to Vercel — covering everything needed for contributors and for production deployment.
 
-**Project**: Full-featured frontend for an annotation + task-tracking application.
+**Quick summary**
+- Framework: Next.js (app router)
+- Language: TypeScript
+- Styling: Tailwind CSS / PostCSS
+- State: Zustand
+- Forms: react-hook-form + zod
 
-**Stack**
-- **Framework:** Next.js (16.x)
-- **Language:** TypeScript (strict-typed components and APIs)
-- **Styling:** Tailwind CSS / PostCSS
-- **State:** Zustand
-- **Forms & Validation:** react-hook-form + zod
-- **Drag & Drop:** @dnd-kit/core
+View core frontend code:
+- API helpers: [frontend/lib/api.ts](frontend/lib/api.ts#L1-L200)
+- Tasks API: [frontend/lib/tasksApi.ts](frontend/lib/tasksApi.ts#L1-L200)
+- Annotation canvas: [frontend/components/annotate/AnnotationCanvas.tsx](frontend/components/annotate/AnnotationCanvas.tsx#L1-L200)
 
-**Core Features**
-- Authentication (login/register) with JWT access/refresh tokens and automatic refresh.
-- Task board with date filtering, create/update/delete operations, and drag-and-drop ordering.
-- Image upload and annotation canvas for labeling images.
-- Responsive UI and reusable components across dashboard, tasks, and annotation flows.
+## Prerequisites
+- Node.js 18+ (LTS recommended)
+- npm, pnpm, or yarn
+- A running backend API (see backend/README) or a reachable API URL
 
-**My Role / Highlights**
-- Implemented the frontend architecture using Next.js + TypeScript, focusing on developer ergonomics and reliability.
-- Built a robust API wrapper with automatic token refresh and typed responses: see [frontend/lib/api.ts](frontend/lib/api.ts#L1-L200).
-- Implemented task APIs and typed client helpers: see [frontend/lib/tasksApi.ts](frontend/lib/tasksApi.ts#L1-L200).
-- Developed the annotation canvas and supporting UI: [frontend/components/annotate/AnnotationCanvas.tsx](frontend/components/annotate/AnnotationCanvas.tsx#L1-L200).
-- Added drag-and-drop task board with accessible interactions: [frontend/components/tasks/Board.tsx](frontend/components/tasks/Board.tsx#L1-L200).
+## Environment variables
+Copy the example and set values:
 
-Why this matters: the app demonstrates practical full-stack integration, strong TypeScript usage, production-ready token handling, and polished UX components — all skills recruiters often look for in frontend engineers.
+```bash
+cp .env.local.example .env.local
+```
 
-## Quick Start (Local)
+Important variables (examples):
 
-Prerequisites:
-- Node.js 18+ (recommended)
-- The backend API running and reachable via an environment variable.
+- `NEXT_PUBLIC_API_BASE_URL` — URL of the backend API (e.g. `http://localhost:8000/api`)
+- `NEXT_PUBLIC_SENTRY_DSN` — optional Sentry DSN for error tracking
+- `NEXT_PUBLIC_ANALYTICS_ID` — optional analytics id
 
-Steps:
+Open [frontend/.env.local.example](frontend/.env.local.example) to see all variables the app reads.
+
+## Local development
 
 1. Install dependencies
 
 ```bash
 npm install
+# or
+pnpm install
+# or
+yarn
 ```
 
-2. Configure environment
-
-Copy the example env and set the API base URL:
-
-```bash
-cp .env.local.example .env.local
-# then edit .env.local and set NEXT_PUBLIC_API_BASE_URL to your backend URL
-```
-
-3. Start the dev server
+2. Start the dev server
 
 ```bash
 npm run dev
 ```
 
-Visit `http://localhost:3000` and sign in using the backend sample credentials (or register a new account).
+3. Open the app
 
-## Build & Lint
+Visit http://localhost:3000. Use a backend account (register via UI if needed) or seed data from the backend.
+
+## Build & run production locally
+
+1. Build
 
 ```bash
 npm run build
-npm run start
-npm run lint
 ```
 
-## Project Structure (high level)
-- `app/` — Next.js routes and pages.
-- `components/` — Reusable UI components grouped by feature (tasks, annotate, auth, dashboard).
-- `lib/` — API helpers and client wrappers (see [frontend/lib/api.ts](frontend/lib/api.ts#L1-L200) and [frontend/lib/tasksApi.ts](frontend/lib/tasksApi.ts#L1-L200)).
-- `types/` — Shared TypeScript types used across the frontend.
+2. Run production server
 
-## Notable Implementation Details
-- The API wrapper stores tokens in `localStorage`, automatically refreshes the access token when a 401 occurs, and surfaces errors with a typed `ApiError` class.
-- All data-fetching helpers return typed responses and normalize paginated results to simple arrays where convenient.
+```bash
+npm run start
+```
 
-## Demo & Screenshots
-Screenshots live in the repository under `public/`. Run the app locally to interact with the annotation canvas and the task board.
+3. Verify
 
-## Contact / Next Steps
-Replace this line with your preferred contact method (email, LinkedIn, GitHub) so recruiters can reach you directly.
+Open http://localhost:3000 and test flows (login, task board, annotate).
+
+## Scripts
+- `dev` — runs the Next.js dev server
+- `build` — produces a production build
+- `start` — runs the production server
+- `lint` — runs ESLint
+
+Check `package.json` for full script names and details.
+
+## Vercel deployment (step-by-step)
+This project is configured for seamless deployment on Vercel (recommended for Next.js). Below are instructions to deploy via the Vercel dashboard or CLI and tips for environment configuration and common issues.
+
+1) Deploy via Git (recommended)
+
+- Push your repository to GitHub, GitLab or Bitbucket.
+- On Vercel, click "New Project" → Import your repo.
+- When prompted, pick the root directory: `frontend` (important if monorepo)
+- Framework Preset: Next.js (auto-detected)
+- Build Command: `npm run build` (or `pnpm build` / `yarn build`)
+- Install Command: `npm ci` (optional)
+- Output Directory: Leave blank (Next.js app router manages output)
+
+Add environment variables in the Vercel dashboard under Settings → Environment Variables:
+
+- `NEXT_PUBLIC_API_BASE_URL` — production backend URL (e.g. `https://api.myapp.com`)
+- Any other `NEXT_PUBLIC_*` vars shown in `.env.local.example`
+
+Set each variable for both Preview and Production environments as appropriate.
+
+2) Deploy via Vercel CLI
+
+```bash
+npm i -g vercel
+cd frontend
+vercel login
+vercel --prod
+```
+
+During the interactive CLI flow, specify the project root as `frontend` if asked, and add environment variables via the dashboard or using `vercel env add`.
+
+3) Common Vercel settings and tips
+
+- Node version: Vercel uses the `engines` field from `package.json` if present. To pin Node 18, add:
+
+	```json
+	"engines": { "node": "18.x" }
+	```
+
+- Environment variables: always set `NEXT_PUBLIC_API_BASE_URL` for Production and Preview.
+- If your backend requires auth credentials or secrets, never expose them as `NEXT_PUBLIC_*` — use server-only secrets or the backend to mediate.
+- If you use image optimization for externally-hosted images, ensure the domain is allowed in `next.config.js`.
+
+4) Custom domain & HTTPS
+
+- Add your domain in Vercel dashboard → Domains and follow DNS instructions. Vercel provisions HTTPS automatically.
+
+## Troubleshooting
+- Build errors: Run `npm run build` locally to reproduce; the terminal will show missing env vars or TypeScript errors.
+- 500 / API errors in Production: verify `NEXT_PUBLIC_API_BASE_URL` and that CORS is configured on the backend.
+- Missing images: check `next.config.js` `images.domains` includes remote hostnames.
+
+## Notes for reviewers / recruiters
+- The project demonstrates practical TypeScript usage, typed API client wrappers, and an annotation canvas you can interact with locally.
+- Key files: [frontend/lib/api.ts](frontend/lib/api.ts#L1-L200), [frontend/components/annotate/AnnotationCanvas.tsx](frontend/components/annotate/AnnotationCanvas.tsx#L1-L200), [frontend/components/tasks/Board.tsx](frontend/components/tasks/Board.tsx#L1-L200).
+
+## Next steps I can help with
+- Add a CI workflow for preview deployments (GitHub Actions)
+- Add a short demo GIF and a public Vercel link to this README
+- Add troubleshooting checklist for backend-auth integration
 
 ---
 
-If you'd like, I can also:
-- Add a short demo GIF and hosted Netlify/Vercel link.
-- Generate a concise one-page portfolio summary specifically for recruiters.
-
-Good luck! If you want edits to tailor this README to a specific job application, tell me the role and I'll adjust the language and highlights.
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
-
-## Getting Started
-
-First, run the development server:
-
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
-```
-
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
-
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
-
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
-
-## Learn More
-
-To learn more about Next.js, take a look at the following resources:
-
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
-
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
-
-## Deploy on Vercel
-
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+File: [frontend/README.md](frontend/README.md)
