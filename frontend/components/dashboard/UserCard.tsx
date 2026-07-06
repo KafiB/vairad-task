@@ -20,7 +20,7 @@ export default function UserCard({user}:any){
 
                 <div className="min-w-0">
 
-                    <p className="text-sm font-medium truncate">
+                    <p className="text-sm text-slate-900 font-medium truncate">
                         {user.full_name}
                     </p>
 

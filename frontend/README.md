@@ -76,11 +76,6 @@ npm run lint
 - The API wrapper stores tokens in `localStorage`, automatically refreshes the access token when a 401 occurs, and surfaces errors with a typed `ApiError` class.
 - All data-fetching helpers return typed responses and normalize paginated results to simple arrays where convenient.
 
-## How to Evaluate Me (for recruiters / hiring managers)
-- Ask about trade-offs: security of storing tokens in `localStorage` vs HTTP-only cookies and why automatic refresh is implemented client-side.
-- Discuss performance: how to paginate large image sets, lazy-load images, and optimize canvas rendering.
-- Code review: examine `frontend/lib/api.ts` for how errors are surfaced and token refresh is retried.
-
 ## Demo & Screenshots
 Screenshots live in the repository under `public/`. Run the app locally to interact with the annotation canvas and the task board.
 
